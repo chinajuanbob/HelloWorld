@@ -7,6 +7,14 @@ TAG?=v1
 .PHONY: all
 all: build image
 
+.PHONY: setup
+setup:
+	go get github.com/micro/protoc-gen-micro
+
+.PHONY: codegen
+codegen:
+	protoc --micro_out=. --go_out=. ./pb/todo.proto
+
 .PHONY: build
 build: 
 	rm -f build/server	

@@ -1,0 +1,58 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+enum TodoStatus {
+    NEW = 0;
+    INPROGRESS = 1;
+    DONE = 2;
+}
+
+message Todo {
+    int32 id = 1;
+    string content = 2;
+    TodoStatus status = 3;
+    google.protobuf.Timestamp last_updated = 4;
+}
+
+service TodoService {
+    rpc Add(AddTodoRequest) returns (AddTodoResponse){}
+    rpc Update(UpdateTodoRequest) returns (UpdateTodoResponse){}
+    rpc List(ListTodoRequest) returns (ListTodoResponse){}
+    rpc Delete(DeleteTodoRequest) returns (DeleteTodoResponse){}
+}
+
+message AddTodoRequest {
+    string content = 1;
+}
+
+message AddTodoResponse {
+    Todo todo = 1;
+}
+
+message UpdateTodoRequest {
+    int32 id = 1;
+    string content = 2;
+    TodoStatus status = 3;
+}
+
+message UpdateTodoResponse {
+    Todo todo = 1;
+}
+
+message ListTodoRequest {
+}
+
+message ListTodoResponse {
+    repeated Todo todos = 1;
+}
+
+message DeleteTodoRequest {
+    int32 id = 1;
+}
+
+message DeleteTodoResponse {
+    bool success = 1;
+}
+
+
+
