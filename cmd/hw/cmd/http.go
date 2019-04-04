@@ -18,21 +18,40 @@ var httpCmd = &cobra.Command{
 
 func init() {
 	serveCmd.AddCommand(httpCmd)
-	httpCmd.PersistentFlags().String("address", "0.0.0.0:9999", "address to serve")
-	viper.BindPFlag("address", httpCmd.PersistentFlags().Lookup("address"))
+	httpCmd.PersistentFlags().String("web", "0.0.0.0:9999", "address to serve")
+	viper.BindPFlag("web", httpCmd.PersistentFlags().Lookup("web"))
+	httpCmd.PersistentFlags().String("target", "0.0.0.0:6666", "address of grpc service")
+	viper.BindPFlag("target", httpCmd.PersistentFlags().Lookup("target"))
+
 }
 
 func runHttp(cmd *cobra.Command, args []string) {
 	// Create service
 	s := web.NewService(
 		web.Name("go.micro.api"),
-		web.Address(viper.GetString("address")),
+		web.Address(viper.GetString("web")),
+		web.BeforeStart(func() error {
+			glog.Info("BeforeStart")
+			return nil
+		}),
+		web.AfterStart(func() error {
+			glog.Info("AfterStart")
+			return nil
+		}),
+		web.BeforeStop(func() error {
+			glog.Info("BeforeStop")
+			return nil
+		}),
+		web.AfterStop(func() error {
+			glog.Info("AfterStop")
+			return nil
+		}),
 	)
 	s.Init()
 
 	// Create RESTful handler (using Gin)
 	gin.SetMode(gin.DebugMode)
-	httpservice := service.NewHealthService()
+	httpservice := service.NewTodoHttpService(viper.GetString("target"))
 
 	// Register Handler
 	s.Handle("/", httpservice.GetRouter())

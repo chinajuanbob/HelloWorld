@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/DeanThompson/ginpprof"
@@ -143,15 +144,28 @@ func (s *HttpService) SetSwagger(version string, endpoints ...*swagger.Endpoint)
 		swag.ContactEmail(""),
 		swag.License("HelloWorld", ""),
 		swag.TermsOfService(""),
-		swag.BasePath(fmt.Sprintf("api/%s", version)),
+		swag.BasePath(fmt.Sprintf("/api/%s", version)),
 		swag.Tag("Hello World", "", swag.TagURL("http://localhost")), //must have one or swagger-ui hit issues
 		swag.Endpoints(endpoints...),
 		swag.SecurityScheme("token", swagger.APIKeySecurity("Authorization", "header")),
 	)
 	api.Walk(func(path string, endpoint *swagger.Endpoint) {
 		h := endpoint.Handler.(func(c *gin.Context))
-		s.router.Handle(endpoint.Method, path, zipFn, h)
+		s.router.Handle(endpoint.Method, FixGinParam(path), zipFn, h)
 	})
 	enableCors := true
 	s.router.GET(fmt.Sprintf("/api/%s/swagger.json", version), gin.WrapH(api.Handler(enableCors)))
+}
+
+func FixGinParam(url string) string {
+	strs := strings.Split(url, "/")
+	for idx, v := range strs {
+		if len(v) < 3 {
+			continue
+		}
+		if v[0] == '{' && v[len(v)-1] == '}' {
+			strs[idx] = ":" + v[1:len(v)-1]
+		}
+	}
+	return strings.Join(strs, "/")
 }

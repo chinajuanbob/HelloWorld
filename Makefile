@@ -10,6 +10,15 @@ all: build image run
 .PHONY: setup
 setup:
 	go get github.com/micro/protoc-gen-micro
+	go get github.com/go-swagger/go-swagger
+	go install github.com/go-swagger/go-swagger/cmd/swagger
+
+.PHONY: clientgen
+clientgen:
+	rm -rf pkg/gen/*
+	curl http://localhost:9999/api/v1/swagger.json | jq "." >swagger.json
+	swagger generate client -f swagger.json -A todoClient -c pkg/gen/client -m pkg/gen/modules --default-scheme=http --skip-validation
+	rm -f swagger.json
 
 .PHONY: codegen
 codegen:
