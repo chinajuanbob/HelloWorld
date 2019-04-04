@@ -5,7 +5,7 @@ ROOT_PKG?=github.com/chinajuanbob/HelloWorld
 TAG?=v1
 
 .PHONY: all
-all: build image
+all: build image run
 
 .PHONY: setup
 setup:
@@ -16,15 +16,20 @@ codegen:
 	protoc --micro_out=. --go_out=. ./pb/todo.proto
 
 .PHONY: build
-build: 
-	rm -f build/server	
+build: codegen
+	rm -f build/*	
 	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build \
 	  -installsuffix cgo \
 	  -ldflags "-s -w" \
-	  -o build/server \
-	  $(ROOT_PKG)/cmd/server
+	  -o build/hw \
+	  $(ROOT_PKG)/cmd/hw
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o build/hwcli $(ROOT_PKG)/cmd/hwcli
 
 .PHONY: image
 image:
 	docker build -t $(REPO_LOCAL)/helloworld-$(GOARCH):$(TAG) .
 	# docker push $(REPO_LOCAL)/master-$(GOARCH):$(TAG)
+
+.PHONY: run
+run:
+	docker run -p6666:6666 $(REPO_LOCAL)/helloworld-$(GOARCH):$(TAG) serve grpc

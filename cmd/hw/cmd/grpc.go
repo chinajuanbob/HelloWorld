@@ -21,7 +21,7 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: run,
+	Run: runGrpc,
 }
 
 func init() {
@@ -30,7 +30,7 @@ func init() {
 	viper.BindPFlag("address", grpcCmd.PersistentFlags().Lookup("address"))
 }
 
-func run(cmd *cobra.Command, args []string) {
+func runGrpc(cmd *cobra.Command, args []string) {
 	defer func() {
 		if err := recover(); err != nil {
 			glog.Error(err)
@@ -40,10 +40,28 @@ func run(cmd *cobra.Command, args []string) {
 	s := grpc.NewService(
 		micro.Name("todo"),
 		micro.Address(viper.GetString("address")),
+		micro.BeforeStart(func() error {
+			glog.Info("BeforeStart")
+			return nil
+		}),
+		micro.AfterStart(func() error {
+			glog.Info("AfterStart")
+			return nil
+		}),
+		micro.BeforeStop(func() error {
+			glog.Info("BeforeStop")
+			return nil
+		}),
+		micro.AfterStop(func() error {
+			glog.Info("AfterStop")
+			return nil
+		}),
 	)
 	s.Init()
 
-	todo.RegisterTodoServiceHandler(s.Server(), new(service.TodoService))
+	server := service.TodoService{}
+	server.Init()
+	todo.RegisterTodoServiceHandler(s.Server(), &server)
 
 	if err := s.Run(); err != nil {
 		glog.Fatal(err)

@@ -10,6 +10,6 @@ RUN apt-get clean \
 
 COPY ./build /
 
-RUN chmod +x /server
+RUN chmod +x /hw
 
-ENTRYPOINT ["/server"]
+ENTRYPOINT ["/hw"]
