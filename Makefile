@@ -34,7 +34,7 @@ codegen:
 	protoc --micro_out=. --go_out=. ./pb/todo.proto
 
 .PHONY: build
-build: codegen
+build:
 	rm -f build/*	
 	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build \
 	  -installsuffix cgo \
