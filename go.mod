@@ -24,9 +24,10 @@ require (
 	github.com/spf13/viper v1.3.2
 )
 
-replace(
-     golang.org/x/sync => github.com/golang/sync latest
-     k8s.io/api => github.com/kubernetes/api latest
-     k8s.io/apimachinery => github.com/kubernetes/apimachinery latest
-     k8s.io/utils => github.com/kubernetes/utils latest
-)
+replace golang.org/x/sync => github.com/golang/sync v0.0.0-20190227155943-e225da77a7e6
+
+replace k8s.io/api => github.com/kubernetes/api v0.0.0-20190313115550-3c12c96769cc
+
+replace k8s.io/apimachinery => github.com/kubernetes/apimachinery v0.0.0-20190320104356-82cbdc1b6ac2
+
+replace k8s.io/utils => github.com/kubernetes/utils v0.0.0-20190308190857-21c4ce38f2a7
