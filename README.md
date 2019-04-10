@@ -6,7 +6,8 @@ A starter project for micro service DevOps in OpenShift
 
 Phase 1
 
-- [ ] micro: restful + swagger / web UI / cli / grpc
+- [x] micro: restful + swagger / grpc
+- [ ] client: web UI / cli
 - [ ] cluster: raft
 - [ ] service mesh: istio
 - [ ] serverless: kubeless ?
@@ -16,6 +17,7 @@ Phase 1
 - [ ] deploy in minishift with CICD
 
 Phase 2
+
 - [ ] message queue: NAT ?
 - [ ] database / orm
 - [ ] storage
