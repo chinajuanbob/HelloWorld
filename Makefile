@@ -1,7 +1,7 @@
 GOOS?=linux
 GOARCH?=amd64
 REPO_LOCAL?=chinajuanbob.com
-ROOT_PKG?=github.com/chinajuanbob/HelloWorld
+ROOT_PKG?=.
 TAG?=v1
 
 OPENSHIFT_VERSION=v3.11.0
