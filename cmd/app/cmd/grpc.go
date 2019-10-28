@@ -6,8 +6,8 @@ import (
 
 	todo "github.com/chinajuanbob/helloworld/pb"
 	"github.com/chinajuanbob/helloworld/pkg/service"
-	"github.com/micro/go-grpc"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/service/grpc"
 	"github.com/spf13/viper"
 )
 

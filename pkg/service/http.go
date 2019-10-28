@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/client"
-	"github.com/micro/go-plugins/client/grpc"
+	"github.com/micro/go-micro/client/grpc"
 	"github.com/savaki/swag/endpoint"
 	"github.com/savaki/swag/swagger"
 )

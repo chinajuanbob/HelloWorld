@@ -4,7 +4,7 @@ import (
 	"github.com/chinajuanbob/helloworld/pkg/service"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
-	"github.com/micro/go-web"
+	"github.com/micro/go-micro/web"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

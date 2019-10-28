@@ -1,6 +1,6 @@
 package main
 
-import "github.com/chinajuanbob/helloworld/cmd/hwcli/cmd"
+import "github.com/chinajuanbob/helloworld/cmd/app/cmd"
 import "github.com/davecgh/go-spew/spew"
 
 func main() {

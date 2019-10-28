@@ -27,7 +27,6 @@ clientgen:
 	rm -rf pkg/gen/*
 	curl http://localhost:9999/api/v1/swagger.json | jq "." >swagger.json
 	swagger generate client -f swagger.json -A todoClient -c pkg/gen/client -m pkg/gen/modules --default-scheme=http --skip-validation
-	rm -f swagger.json
 
 .PHONY: codegen
 codegen:
@@ -39,10 +38,12 @@ build:
 	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build \
 	  -installsuffix cgo \
 	  -ldflags "-s -w" \
-	  -o build/hw \
-	  $(ROOT_PKG)/cmd/hw
-	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o build/hwcli $(ROOT_PKG)/cmd/hwcli
-	cp build/hw build/goapp
+	  -o build/app \
+	  $(ROOT_PKG)/cmd/app
+
+.PHONY: buildclient
+buildclient:
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o build/cli $(ROOT_PKG)/cmd/cli
 
 .PHONY: image
 image:
